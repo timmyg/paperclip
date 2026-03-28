@@ -22,6 +22,7 @@ COPY packages/adapters/opencode-local/package.json packages/adapters/opencode-lo
 COPY packages/adapters/pi-local/package.json packages/adapters/pi-local/
 COPY packages/plugins/sdk/package.json packages/plugins/sdk/
 COPY packages/plugins/create-paperclip-plugin/package.json packages/plugins/create-paperclip-plugin/
+COPY patches/ patches/
 
 RUN pnpm install --frozen-lockfile
 
@@ -32,6 +33,7 @@ COPY . .
 RUN pnpm --filter @paperclipai/shared build
 RUN pnpm --filter @paperclipai/plugin-sdk build
 RUN pnpm --filter @paperclipai/ui build
+RUN pnpm --filter @paperclipai/plugin-sdk build
 RUN pnpm --filter @paperclipai/server build
 RUN test -f server/dist/index.js || (echo "ERROR: server build output missing" && exit 1)
 
