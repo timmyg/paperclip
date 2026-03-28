@@ -64,15 +64,9 @@ export async function prepareOpenCodeRuntimeConfig(input: {
   }
 
   const existingConfig = await readJsonObject(runtimeConfigPath);
-  const existingPermission = isPlainObject(existingConfig.permission)
-    ? existingConfig.permission
-    : {};
   const nextConfig = {
     ...existingConfig,
-    permission: {
-      ...existingPermission,
-      external_directory: "allow",
-    },
+    permission: "allow",
   };
   await fs.writeFile(runtimeConfigPath, `${JSON.stringify(nextConfig, null, 2)}\n`, "utf8");
 
@@ -82,7 +76,7 @@ export async function prepareOpenCodeRuntimeConfig(input: {
       XDG_CONFIG_HOME: runtimeConfigHome,
     },
     notes: [
-      "Injected runtime OpenCode config with permission.external_directory=allow to avoid headless approval prompts.",
+      "Injected runtime OpenCode config with permission=allow to avoid headless approval prompts.",
     ],
     cleanup: async () => {
       await fs.rm(runtimeConfigHome, { recursive: true, force: true });
