@@ -26,6 +26,10 @@ if [ "$changed" = "1" ]; then
     chown -R node:node /paperclip
 fi
 
+# Railway mounts volumes as root. Ensure the mount point is always writable
+# by node regardless of whether UID/GID remapping triggered above.
+chown node:node /paperclip
+
 # Pre-configure OpenCode to allow external_directory access in headless mode.
 # Only written if absent so a richer config written post-setup is preserved.
 mkdir -p /paperclip/.config/opencode
