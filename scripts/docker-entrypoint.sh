@@ -26,4 +26,12 @@ if [ "$changed" = "1" ]; then
     chown -R node:node /paperclip
 fi
 
+# Pre-configure OpenCode to allow external_directory access in headless mode.
+# Only written if absent so a richer config written post-setup is preserved.
+mkdir -p /paperclip/.config/opencode
+if [ ! -f /paperclip/.config/opencode/opencode.json ]; then
+    echo '{"permission":"allow"}' > /paperclip/.config/opencode/opencode.json
+    chown node:node /paperclip/.config/opencode/opencode.json
+fi
+
 exec gosu node "$@"
