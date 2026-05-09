@@ -38,4 +38,8 @@ if [ ! -f /paperclip/.config/opencode/opencode.json ]; then
     chown node:node /paperclip/.config/opencode/opencode.json
 fi
 
+# Generate one-time bootstrap invite if not already done.
+# Output logged to stdout so the invite URL appears in Railway deployment logs.
+gosu node node /app/bootstrap.cjs
+
 exec gosu node "$@"
