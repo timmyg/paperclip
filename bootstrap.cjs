@@ -31,15 +31,15 @@ async function main() {
     // Revoke any stale bootstrap invites
     await sql`
       UPDATE invites
-      SET "revokedAt" = NOW(), "updatedAt" = NOW()
-      WHERE "inviteType" = 'bootstrap_ceo'
-        AND "revokedAt" IS NULL
-        AND "acceptedAt" IS NULL
-        AND "expiresAt" > NOW()
+      SET revoked_at = NOW(), updated_at = NOW()
+      WHERE invite_type = 'bootstrap_ceo'
+        AND revoked_at IS NULL
+        AND accepted_at IS NULL
+        AND expires_at > NOW()
     `;
     // Insert new invite
     await sql`
-      INSERT INTO invites ("inviteType", "tokenHash", "allowedJoinTypes", "expiresAt", "invitedByUserId")
+      INSERT INTO invites (invite_type, token_hash, allowed_join_types, expires_at, invited_by_user_id)
       VALUES ('bootstrap_ceo', ${tokenHash}, 'human', ${expiresAt}, 'system')
     `;
     const inviteUrl = baseUrl + '/invite/' + token;
